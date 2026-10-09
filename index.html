@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUI — Roblox UI Marketplace</title>
+<style>
+:root {
+  --bg: #090b12;
+  --panel: #111522;
+  --border: #252b3d;
+  --text: #f4f6ff;
+  --muted: #929bb3;
+  --blue: #6575ff;
+  --cyan: #38d9ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+header {
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: #0b0d15;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+.logo span { color: var(--blue); }
+nav { display: flex; gap: 28px; }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { color: white; }
+.btn {
+  border: 0;
+  background: var(--blue);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: .2s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+.btn.secondary {
+  background: #191f31;
+  border: 1px solid var(--border);
+}
+.hero {
+  padding: 85px 7% 70px;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 50px;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at 80% 30%, #3331a733, transparent 50%),
+    radial-gradient(ellipse at 20% 70%, #176eab22, transparent 45%);
+}
+.eyebrow {
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+h1 {
+  font-size: clamp(42px, 5.3vw, 76px);
+  line-height: 1.03;
+  letter-spacing: -3px;
+  margin: 20px 0;
+}
+.gradient {
+  background: linear-gradient(100deg, #8792ff, #41d8ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.hero p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 500px;
+}
+.actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+.stats { display: flex; gap: 35px; margin-top: 42px; }
+.stat strong { display: block; font-size: 23px; }
+.stat small { color: var(--muted); }
+.preview {
+  padding: 18px;
+  border: 1px solid #343b60;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #171c31, #0e111d);
+  box-shadow: 0 30px 90px #0008;
+  transform: rotate(1deg);
+}
+.preview-top {
+  display: flex;
+  justify-content: space-between;
+  color: #aab5d7;
+  font-size: 12px;
+  padding-bottom: 18px;
+}
+.game-screen {
+  min-height: 280px;
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 50% 35%, #6d5bcd66, transparent 50%),
+    linear-gradient(135deg, #1c3452, #101421 70%);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.game-title { font-size: 19px; font-weight: 900; }
+.game-currency { color: #65f0bc; font-size: 13px; }
+.game-bottom { display: flex; justify-content: space-between; gap: 8px; }
+.game-box {
+  flex: 1;
+  padding: 12px 5px;
+  text-align: center;
+  border: 1px solid #ffffff24;
+  border-radius: 10px;
+  background: #101626cc;
+  font-size: 12px;
+}
+.game-box b { display: block; margin-bottom: 7px; font-size: 20px; }
+section.products { padding: 45px 7% 80px; }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+h2 { font-size: 30px; margin: 0 0 8px; }
+.subtitle { color: var(--muted); font-size: 14px; }
+.search {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 13px 15px;
+  color: white;
+  border-radius: 10px;
+  width: min(270px, 100%);
+  outline: none;
+}
+.search:focus { border-color: var(--blue); }
+.filters { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 25px; }
+.filter {
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 15px;
+}
+.filter.active, .filter:hover {
+  background: #25284a;
+  border-color: var(--blue);
+  color: white;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform .2s, border-color .2s;
+}
+.card:hover { transform: translateY(-5px); border-color: #626ef5; }
+.art {
+  height: 175px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.art:before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  filter: blur(35px);
+  opacity: .35;
+  background: var(--glow);
+}
+.mini-ui {
+  position: relative;
+  z-index: 1;
+  width: 88%;
+  border: 1px solid #ffffff38;
+  background: #111626ed;
+  border-radius: 11px;
+  padding: 12px;
+  box-shadow: 0 12px 25px #0005;
+  transform: rotate(-3deg);
+}
+.mini-head { height: 8px; width: 50%; border-radius: 5px; background: var(--glow); margin-bottom: 12px; }
+.mini-line { height: 7px; border-radius: 5px; background: #ffffff19; margin: 7px 0; }
+.mini-row { display: flex; gap: 6px; margin-top: 12px; }
+.mini-cell { height: 35px; flex: 1; border-radius: 6px; background: #ffffff10; border: 1px solid #ffffff16; }
+.tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #080b15dd;
+  padding: 6px 9px;
+  border-radius: 6px;
+  font-size: 10px;
+  z-index: 2;
+}
+.card-content { padding: 17px; }
+.card h3 { margin: 0 0 8px; font-size: 17px; }
+.creator { color: var(--muted); font-size: 12px; }
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.price { font-size: 19px; font-weight: 800; }
+.price small { color: var(--muted); font-size: 11px; font-weight: 400; }
+.view-btn {
+  background: #252b45;
+  color: white;
+  border: 1px solid #373e5c;
+  padding: 9px 12px;
+  border-radius: 8px;
+}
+.empty { color: var(--muted); padding: 30px 0; }
+.sell {
+  margin: 0 7% 75px;
+  padding: 40px;
+  border: 1px solid #333b65;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #1a1e3c, #111522);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+.sell h2 { font-size: 28px; }
+.sell p { color: var(--muted); line-height: 1.7; }
+footer {
+  padding: 28px 7%;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+footer a { color: var(--muted); text-decoration: none; }
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: #000b;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: #111522;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px;
+  width: min(450px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+}
+.modal h2 { margin-bottom: 15px; }
+.modal p { color: var(--muted); line-height: 1.6; }
+.modal .btn { margin-top: 12px; }
+.modal-close { float: right; background: none; color: white; border: 0; font-size: 24px; }
+.cart-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 10px; }
+.remove { color: #ff8c9a; background: none; border: 0; }
+.field { width: 100%; margin: 8px 0 14px; padding: 12px; background: #090b12; border: 1px solid var(--border); border-radius: 9px; color: white; }
+@media(max-width: 950px) {
+  .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .hero { grid-template-columns: 1fr; padding-top: 55px; }
+  .preview { max-width: 600px; width: 100%; }
+}
+@media(max-width: 600px) {
+  header { padding: 0 5%; height: 65px; }
+  nav { gap: 12px; }
+  nav a { font-size: 12px; }
+  nav a:nth-child(2) { display: none; }
+  header .btn { padding: 9px; font-size: 12px; }
+  .hero { padding: 45px 5%; }
+  h1 { letter-spacing: -2px; }
+  .stats { gap: 18px; }
+  section.products { padding: 35px 5% 55px; }
+  .grid { grid-template-columns: 1fr; }
+  .section-head { align-items: stretch; flex-direction: column; }
+  .search { width: 100%; }
+  .sell { margin: 0 5% 50px; padding: 25px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="#" class="logo" style="color:white;text-decoration:none">NEX<span>UI</span></a>
+  <nav>
+    <a href="#produkte">Entdecken</a>
+    <a href="#verkaufen">Verkaufen</a>
+  </nav>
+  <button class="btn secondary" onclick="openCart()">🛒 Warenkorb <span id="cartCount">0</span></button>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <div class="eyebrow">THE MARKETPLACE FOR CREATORS</div>
+    <h1>Deine nächste UI.<br><span class="gradient">Dein nächstes Level.</span></h1>
+    <p>Entdecke moderne Roblox-UI-Kits für deine Games. Von Simulator-HUDs bis zu kompletten Inventar-Systemen – designed für Entwickler.</p>
+    <div class="actions">
+      <button class="btn" onclick="document.querySelector('#produkte').scrollIntoView({behavior:'smooth'})">UIs entdecken ↗</button>
+      <button class="btn secondary" onclick="document.querySelector('#verkaufen').scrollIntoView({behavior:'smooth'})">UI verkaufen</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>UI Kits</strong><small>Für deine Games</small></div>
+      <div class="stat"><strong>Modern</strong><small>Cleanes Design</small></div>
+      <div class="stat"><strong>Creator</strong><small>Für Entwickler</small></div>
+    </div>
+  </div>
+  <div class="preview">
+    <div class="preview-top"><span>✦ NEXUI PREVIEW</span><span>● LIVE DESIGN</span></div>
+    <div class="game-screen">
+      <div><div class="game-title">⚡ SUPER SIMULATOR</div><div class="game-currency">◈ 125,400 Coins &nbsp; ◆ 850 Gems</div></div>
+      <div class="game-bottom">
+        <div class="game-box"><b>🎒</b>Inventory</div>
+        <div class="game-box"><b>🥚</b>Eggs</div>
+        <div class="game-box"><b>🐾</b>Pets</div>
+        <div class="game-box"><b>⚙</b>Settings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="produkte">
+  <div class="section-head">
+    <div><h2>Entdecke die UIs</h2><div class="subtitle">Designs für dein nächstes Roblox-Projekt.</div></div>
+    <input class="search" id="search" placeholder="⌕ UIs suchen..." oninput="renderProducts()">
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>Keine UIs gefunden. Probiere einen anderen Suchbegriff.</div>
+</section>
+
+<section class="sell" id="verkaufen">
+  <div>
+    <div class="eyebrow">FOR UI CREATORS</div>
+    <h2>Dein Design. Dein Shop.</h2>
+    <p>Du erstellst Roblox-UIs? Präsentiere deine Designs und bereite deine Produktangebote vor.</p>
+  </div>
+  <button class="btn" onclick="openSeller()">Als Creator starten ↗</button>
+</section>
+</main>
+
+<footer>
+  <span>© 2026 NEXUI · Unabhängiges UI-Marktplatz-Konzept</span>
+  <span>Fan-made marketplace · Nicht mit Roblox verbunden</span>
+</footer>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const products = [
+ {id:1,name:"Simulator HUD",creator:"NEXUI Studio",category:"Simulator",price:4.99,color:"#6875ff",desc:"Modernes HUD mit Währung, Inventar und übersichtlicher Navigation."},
+ {id:2,name:"Admin Panel",creator:"PixelForge",category:"Admin",price:7.99,color:"#b16cff",desc:"Cleanes Admin-Panel-Konzept mit Tabs, Spielerübersicht und Einstellungen."},
+ {id:3,name:"Inventory System",creator:"NovaDesigns",category:"Inventory",price:5.49,color:"#34d6c5",desc:"Inventar-Konzept mit Item-Slots, Kategorien und Suchfeld."},
+ {id:4,name:"Pet Shop UI",creator:"UIbyAlex",category:"Simulator",price:3.99,color:"#ff9d59",desc:"Buntes Shop-Konzept mit Pet-Karten und Kaufbuttons."},
+ {id:5,name:"Premium Settings",creator:"NEXUI Studio",category:"Other",price:2.99,color:"#ff648a",desc:"Ein modernes Einstellungsmenü für dein Roblox-Spiel."},
+ {id:6,name:"Trading Interface",creator:"PixelForge",category:"Inventory",price:6.49,color:"#55a7ff",desc:"Trading-UI-Konzept mit zwei Spielerfeldern und Angebotsübersicht."},
+ {id:7,name:"Game Shop",creator:"NovaDesigns",category:"Other",price:4.49,color:"#e9bd54",desc:"Shop-Layout mit Produktkarten, Preisen und Kategorien."},
+ {id:8,name:"Staff Dashboard",creator:"UIbyAlex",category:"Admin",price:8.99,color:"#6de19a",desc:"Dashboard-Konzept mit Navigation und Moderationsübersicht."}
+];
+const categories = ["Alle","Simulator","Admin","Inventory","Other"];
+let activeCategory = "Alle";
+let cart = [];
+
+function euro(price) {
+  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(price);
+}
+function renderFilters() {
+  document.getElementById("filters").innerHTML = categories.map(c =>
+    `<button class="filter ${activeCategory===c?'active':''}" onclick="setCategory('${c}')">${c==="Alle"?"Alle UIs":c}</button>`
+  ).join("");
+}
+function setCategory(c) {
+  activeCategory=c;
+  renderFilters();
+  renderProducts();
+}
+function renderProducts() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const list = products.filter(p =>
+    (activeCategory==="Alle" || p.category===activeCategory) &&
+    (p.name+" "+p.creator+" "+p.category).toLowerCase().includes(query)
+  );
+  document.getElementById("empty").hidden = list.length>0;
+  document.getElementById("grid").innerHTML = list.map(p => `
+    <article class="card">
+      <div class="art" style="background:linear-gradient(135deg,${p.color}22,#151a2a);--glow:${p.color}">
+        <span class="tag">${p.category}</span>
+        <div class="mini-ui">
+          <div class="mini-head"></div>
+          <div class="mini-line" style="width:90%"></div>
+          <div class="mini-line" style="width:68%"></div>
+          <div class="mini-row"><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div></div>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>${p.name}</h3>
+        <div class="creator">by ${p.creator}</div>
+        <div class="card-footer">
+          <div class="price">${euro(p.price)}</div>
+          <button class="view-btn" onclick="showProduct(${p.id})">Ansehen ↗</button>
+        </div>
+      </div>
+    </article>`).join("");
+}
+function showProduct(id) {
+  const p=products.find(x=>x.id===id);
+  document.getElementById("modal").innerHTML=`
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="eyebrow">${p.category.toUpperCase()} UI KIT</div>
+    <h2 style="margin-top:15px">${p.name}</h2>
+    <p>Erstellt von ${p.creator}</p>
+    <p>${p.desc}</p>
+    <div style="font-size:25px;font-weight:800;margin:20px 0">${euro(p.price)}</div>
+    <p style="font-size:12px">Demo-Produkt: Der Kauf ist noch nicht aktiviert. Es wird noch keine Datei ausgeliefert.</p>
+    <button class="btn" onclick="addToCart(${p.id});closeModal()">In den Warenkorb</button>`;
+  openModal();
+}
+function addToCart(id) {
+  if(!cart.includes(id)) cart.push(id);
+  updateCart();
+}
+function updateCart() {
+  document.getElementById("cartCount").textContent=cart.length;
+}
+function openCart() {
+  const items=cart.map(id=>products.find(p=>p.id===id));
+  const total=items.reduce((s,p)=>s+p.price,0);
+  document.getElementById("modal").innerHTML=`
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Dein Warenkorb</h2>
+    ${items.length ? items.map(p=>`
+      <div class="cart-row"><span>${p.name}<br><small>${euro(p.price)}</small></span>
+      <button class="remove" onclick="removeItem(${p.id});openCart()">Entfernen</button></div>`).join("") : "<p>Dein Warenkorb ist noch leer.</p>"}
+    <h3 style="margin-top:22px">Gesamt: ${euro(total)}</h3>
+    <p>Demo-Warenkorb – echte Zahlungen sind noch nicht eingerichtet.</p>`;
+  openModal();
+}
+function removeItem(id) {
+  cart=cart.filter(x=>x!==id);
+  updateCart();
+}
+function openSeller() {
+  document.getElementById("modal").innerHTML=`
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Creator werden</h2>
+    <p>Erstelle einen Entwurf für dein UI-Angebot. Das Formular veröffentlicht noch nichts online.</p>
+    <form onsubmit="submitSeller(event)">
+      <label>Creator-Name</label>
+      <input class="field" name="creator" required maxlength="40" placeholder="Dein Shop-Name">
+      <label>Name deiner UI</label>
+      <input class="field" name="product" required maxlength="60" placeholder="z. B. Simulator HUD">
+      <label>Kategorie</label>
+      <select class="field" name="category">
+        <option>Simulator</option><option>Admin</option><option>Inventory</option><option>Other</option>
+      </select>
+      <label>Preis in Euro (Vorschlag)</label>
+      <input class="field" name="price" type="number" min="0" max="1000" step=".01" required placeholder="4.99">
+      <label>Beschreibung</label>
+      <textarea class="field" name="description" required maxlength="500" placeholder="Was ist in deinem UI enthalten?"></textarea>
+      <button class="btn" type="submit">Angebot vorbereiten</button>
+    </form>`;
+  openModal();
+}
+function submitSeller(e) {
+  e.preventDefault();
+  const f=new FormData(e.target);
+  const draft={
+    creator:f.get("creator"),
+    name:f.get("product"),
+    category:f.get("category"),
+    price:Number(f.get("price")),
+    description:f.get("description")
+  };
+  document.getElementById("modal").innerHTML=`
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Entwurf erstellt ✓</h2>
+    <p><b>${escapeHTML(draft.name)}</b> von ${escapeHTML(draft.creator)}</p>
+    <p>Kategorie: ${escapeHTML(draft.category)} · Preisvorschlag: ${euro(draft.price)}</p>
+    <p>${escapeHTML(draft.description)}</p>
+    <p>Das Angebot ist nur eine Vorschau. Für echtes Veröffentlichen brauchst du ein Backend und Dateiuploads.</p>
+    <button class="btn" onclick="closeModal()">Fertig</button>`;
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function openModal() {document.getElementById("modalBg").classList.add("open");}
+function closeModal() {document.getElementById("modalBg").classList.remove("open");}
+renderFilters();
+renderProducts();
+</script>
+</body>
+</html>
